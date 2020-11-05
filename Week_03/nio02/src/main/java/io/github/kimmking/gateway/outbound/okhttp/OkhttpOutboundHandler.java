@@ -7,11 +7,19 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import okhttp3.*;
 
+import javax.security.auth.login.AccountLockedException;
 import java.io.IOException;
 import java.util.List;
+
+import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
+import static io.netty.handler.codec.http.HttpHeaderValues.KEEP_ALIVE;
+import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
+import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 
 public class OkhttpOutboundHandler {
@@ -36,39 +44,25 @@ public class OkhttpOutboundHandler {
                 .get()
                 .url(url)
                 .build();
-        // 处理响应信息
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String value = response.body().string();
-                    Response res = null;
-                    try {
-                        // 组装响应信息返回
-                        res = new Response.Builder()
-                                .request(request)
-                                .protocol(Protocol.HTTP_1_1)
-                                .code(200)
-                                .body(ResponseBody.create(MediaType.parse("application/json"), value))
-                                .build();
-
-                    } finally {
-                        if (fullRequest != null) {
-                            if (!HttpUtil.isKeepAlive(fullRequest)) {
-                                ctx.write(res).addListener(ChannelFutureListener.CLOSE);
-                            } else {
-                                ctx.write(res);
-                            }
-                        }
-                        ctx.flush();
-                    }
+        Call call = client.newCall(request);
+        FullHttpResponse response = null;
+        try {
+            Response res = call.execute();
+            String value = res.body().string();
+            response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(value.getBytes("UTF-8")));
+            response.headers().set("Content-Type", "application/json");
+            response.headers().setInt("Content-Length", response.content().readableBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fullRequest != null) {
+                if (!HttpUtil.isKeepAlive(fullRequest)) {
+                    ctx.write(response).addListener(ChannelFutureListener.CLOSE);
+                } else {
+                    response.headers().set(CONNECTION, KEEP_ALIVE);
+                    ctx.write(response);
                 }
             }
-        });
+        }
     }
 }

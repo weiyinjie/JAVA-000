@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bec14ecf-497d-4917-b386-b1a6900265f9" name="Default Changelist" comment="" />
+    <list default="true" id="bec14ecf-497d-4917-b386-b1a6900265f9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/kimmking/gateway/outbound/okhttp/OkhttpOutboundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/kimmking/gateway/outbound/okhttp/OkhttpOutboundHandler.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,15 +19,19 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="$PROJECT_DIR$/../../../apache-maven-3.6.3" />
+        <option name="mavenHome" value="$USER_HOME$/Downloads/apache-maven-3.6.3" />
         <option name="userSettingsFile" value="$PROJECT_DIR$/../../../apache-maven-3.6.3/conf/settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
   <component name="ProjectId" id="1jp9weaqvR3jRwIfaxDQDXGX246" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
@@ -116,10 +122,11 @@
     </state>
     <state width="1878" height="366" key="GridCell.Tab.1.right/-1920.-89.1920.1057/0.23.1792.1017@-1920.-89.1920.1057" timestamp="1604495127389" />
     <state width="1750" height="566" key="GridCell.Tab.1.right/0.23.1792.1017@0.23.1792.1017" timestamp="1604497950091" />
-    <state x="-1459" y="78" key="SettingsEditor" timestamp="1604491888367">
-      <screen x="-1920" y="-89" width="1920" height="1057" />
+    <state x="430" y="184" key="SettingsEditor" timestamp="1604541481308">
+      <screen x="0" y="23" width="1792" height="1017" />
     </state>
     <state x="-1459" y="78" key="SettingsEditor/-1920.-89.1920.1057/0.23.1792.1017@-1920.-89.1920.1057" timestamp="1604491888367" />
+    <state x="430" y="184" key="SettingsEditor/-1920.-89.1920.1057/0.23.1792.1017@0.23.1792.1017" timestamp="1604541481308" />
     <state x="-1423" y="182" width="925" height="617" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1604494091833">
       <screen x="-1920" y="-89" width="1920" height="1057" />
     </state>
