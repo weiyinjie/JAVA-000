@@ -36,19 +36,13 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-            //logger.info("channelRead流量接口请求开始，时间为{}", startTime);
             FullHttpRequest fullRequest = (FullHttpRequest) msg;
-//            String uri = fullRequest.uri();
-//            //logger.info("接收到的请求url为{}", uri);
-//            if (uri.contains("/test")) {
-//                handlerTest(fullRequest, ctx);
-//            }
-            System.out.println(fullRequest.getUri());
+            logger.info("request uri is {}", fullRequest.getUri());
             // 过滤器 添加自定义请求头
             filter.filter(fullRequest, ctx);
             handler.handle(fullRequest, ctx);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("request error", e);
         } finally {
             ReferenceCountUtil.release(msg);
         }

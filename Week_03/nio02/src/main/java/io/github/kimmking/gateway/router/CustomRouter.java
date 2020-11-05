@@ -43,8 +43,8 @@ public class CustomRouter implements HttpEndpointRouter {
         ROUND_ROBIN() {
             @Override
             public String route(List<String> endpoints, AtomicInteger currentIdx) {
-
-                return null;
+                int idx = currentIdx.getAndIncrement() % endpoints.size();
+                return endpoints.get(idx);
             }
         };
 

@@ -13,6 +13,7 @@ import okhttp3.*;
 
 import javax.security.auth.login.AccountLockedException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
@@ -31,8 +32,17 @@ public class OkhttpOutboundHandler {
     private List<String> routes;
 
     public OkhttpOutboundHandler(List<String> routes) {
-        this.httpEndpointRouter = new CustomRouter(CustomRouter.RouteStrategy.RANDOM);
-        this.routes = routes;
+        if (routes != null && routes.size() > 0) {
+            List<String> list = new ArrayList<>(routes.size());
+            for (String route : routes) {
+                if (route.endsWith("/")) {
+                    route = route.substring(0, route.length() - 1);
+                }
+                list.add(route);
+            }
+            this.routes = list;
+        }
+        this.httpEndpointRouter = new CustomRouter(CustomRouter.RouteStrategy.ROUND_ROBIN);
         this.client = new OkHttpClient();
     }
 
