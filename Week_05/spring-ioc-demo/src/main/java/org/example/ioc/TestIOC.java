@@ -3,10 +3,10 @@ package org.example.ioc;
 public class TestIOC {
 
     public static void main(String[] args) {
-        IOCBean iocBean = (IOCBean) BeanFactory.getBean("test");
-        iocBean.say();
+        IIOCBean iiocBean = (IIOCBean) BeanFactory.getBean("test");
+        iiocBean.say("param1");
 
-        IOCBeanWithField iocBeanWithField = (IOCBeanWithField)BeanFactory.getBean("testautowired");
-        iocBeanWithField.say();
+//        IIOCBean iocBeanWithField = (IIOCBean) BeanFactory.getBean("testautowired");
+//        iocBeanWithField.say("param1");
     }
 }

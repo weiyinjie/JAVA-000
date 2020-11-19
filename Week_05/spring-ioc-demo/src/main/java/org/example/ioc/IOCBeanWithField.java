@@ -1,12 +1,13 @@
 package org.example.ioc;
 
 @Bean(name = "testautowired")
-public class IOCBeanWithField {
+public class IOCBeanWithField implements IIOCBean {
     @AutoWired(name = "test")
-    private IOCBean iocBean;
+    private IIOCBean iiocBean;
 
-    public void say() {
-        System.out.println("method in IOCBeanWithField");
-        iocBean.say();
+    @Override
+    public void say(String param) {
+        System.out.println("say method in IOCBeanWithField, param is: " + param);
+        iiocBean.say(param);
     }
 }

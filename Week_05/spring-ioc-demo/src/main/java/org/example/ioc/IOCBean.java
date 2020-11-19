@@ -1,9 +1,10 @@
 package org.example.ioc;
 
 @Bean(name = "test")
-public class IOCBean {
+public class IOCBean implements IIOCBean {
 
-    public void say() {
-        System.out.println("simple bean");
+    @Override
+    public void say(String param) {
+        System.out.println("say method in IOCBean, param is: " + param);
     }
 }
