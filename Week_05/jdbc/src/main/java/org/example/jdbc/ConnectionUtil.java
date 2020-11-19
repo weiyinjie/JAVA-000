@@ -11,7 +11,7 @@ public class ConnectionUtil {
         try {
             return DriverManager.getConnection("jdbc:mysql://sh-cdb-mn9j3gay.sql.tencentcdb.com:60789/test?useUnicode=true&characterEncoding=utf-8",
                     "root",
-                    "Weiyinjie1992");
+                    "xxxxxx");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

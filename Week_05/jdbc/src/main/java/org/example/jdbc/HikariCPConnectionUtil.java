@@ -14,7 +14,7 @@ public class HikariCPConnectionUtil {
         hikariDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         hikariDataSource.setJdbcUrl("jdbc:mysql://sh-cdb-mn9j3gay.sql.tencentcdb.com:60789/test?useUnicode=true&characterEncoding=utf-8");
         hikariDataSource.setUsername("root");
-        hikariDataSource.setPassword("Weiyinjie1992");
+        hikariDataSource.setPassword("xxxxxx");
         hikariDataSource.setMaximumPoolSize(Runtime.getRuntime().availableProcessors() * 2 + 1);
     }
 
