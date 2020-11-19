@@ -6,6 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TestTransaction {
+
+    /**
+     * 是否使用连接池
+     */
+    private static final boolean USE_POOL = true;
+
     public static void main(String[] args) {
         TestTransaction testTransaction = new TestTransaction();
         testTransaction.doTransaction();
@@ -14,7 +20,8 @@ public class TestTransaction {
     private static final long id = 1L;
 
     public void doTransaction() {
-        Connection connection = HikariCPConnectionUtil.getConnection();
+        Connection connection = USE_POOL ? HikariCPConnectionUtil.getConnection()
+                : ConnectionUtil.getConnection();
         try {
             connection.setAutoCommit(false);
             System.out.println("user: " + this.getById(id));
@@ -38,7 +45,8 @@ public class TestTransaction {
 
     public void delete(Long id) {
         try {
-            Connection connection = HikariCPConnectionUtil.getConnection();
+            Connection connection = USE_POOL ? HikariCPConnectionUtil.getConnection()
+                    : ConnectionUtil.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from user where id = ?");
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
@@ -49,7 +57,8 @@ public class TestTransaction {
 
     public void update(User user) {
         try {
-            Connection connection = HikariCPConnectionUtil.getConnection();
+            Connection connection = USE_POOL ? HikariCPConnectionUtil.getConnection()
+                    : ConnectionUtil.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("update user set name = ? where id = ?");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setLong(2, user.getId());
@@ -61,7 +70,8 @@ public class TestTransaction {
 
     public User getById(Long id) {
         try {
-            Connection connection = ConnectionUtil.connection.get();
+            Connection connection = USE_POOL ? HikariCPConnectionUtil.getConnection()
+                    : ConnectionUtil.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("select * from user where id = ?");
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
