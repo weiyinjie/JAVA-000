@@ -1,9 +1,12 @@
 package org.example.aop.handler;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
-public class AOPHandler implements InvocationHandler {
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
+public class AOPCglibProxy implements MethodInterceptor {
 
     /**
      * 前置方法
@@ -30,7 +33,7 @@ public class AOPHandler implements InvocationHandler {
      */
     private final String methodName;
 
-    public AOPHandler(Method before, Method after, Object pointCutObj, Object obj, String methodName) {
+    public AOPCglibProxy(Method before, Method after, Object pointCutObj, Object obj, String methodName) {
         this.before = before;
         this.after = after;
         this.pointCutObj = pointCutObj;
@@ -39,12 +42,12 @@ public class AOPHandler implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
         if (method.getName().equals(methodName)) {
             if (before != null) {
                 before.invoke(pointCutObj, args);
             }
-            Object result = method.invoke(obj, args);
+            Object result = methodProxy.invoke(obj, args);
             if (after != null) {
                 after.invoke(pointCutObj, args);
             }

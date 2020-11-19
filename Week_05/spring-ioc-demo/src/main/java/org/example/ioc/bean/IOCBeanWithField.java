@@ -1,4 +1,7 @@
-package org.example.ioc;
+package org.example.ioc.bean;
+
+import org.example.ioc.annotation.AutoWired;
+import org.example.ioc.annotation.Bean;
 
 @Bean(name = "testautowired")
 public class IOCBeanWithField implements IIOCBean {

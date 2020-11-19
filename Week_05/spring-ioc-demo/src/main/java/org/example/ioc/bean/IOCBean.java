@@ -1,4 +1,6 @@
-package org.example.ioc;
+package org.example.ioc.bean;
+
+import org.example.ioc.annotation.Bean;
 
 @Bean(name = "test")
 public class IOCBean implements IIOCBean {

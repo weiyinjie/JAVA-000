@@ -1,16 +1,12 @@
 package org.example.ioc;
 
-import org.example.aop.annotation.After;
-import org.example.aop.annotation.Before;
+import org.example.aop.AOPUtils;
 import org.example.aop.annotation.PointCut;
-import org.example.aop.handler.AOPHandler;
+import org.example.ioc.annotation.AutoWired;
+import org.example.ioc.annotation.Bean;
 
-import java.beans.Beans;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,29 +51,13 @@ public class BeanFactory {
                     PointCut annotation = aClass.getAnnotation(PointCut.class);
                     // 需要增强的bean名称以及其方法名
                     String beanName = annotation.beanName();
-                    String methodName = annotation.methodName();
-                    Method before = null;
-                    Method after = null;
-                    for (Method declaredMethod : aClass.getDeclaredMethods()) {
-                        if (declaredMethod.isAnnotationPresent(Before.class)) {
-                            before = declaredMethod;
-                        } else if (declaredMethod.isAnnotationPresent(After.class)) {
-                            after = declaredMethod;
-                        }
-                    }
-                    // bean对象
-                    Object obj = BEANS.get(beanName);
-                    Object proxy = null;
                     try {
-                        proxy = Proxy.newProxyInstance(obj.getClass().getClassLoader(),
-                                obj.getClass().getInterfaces(),
-                                new AOPHandler(before, after, aClass.newInstance(), obj, methodName));
+                        BEANS.put(beanName, AOPUtils.getProxyObj(aClass.newInstance(), BEANS.get(beanName), annotation.methodName()));
                     } catch (InstantiationException e) {
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
-                    BEANS.put(beanName, proxy);
                 }
 
             });
