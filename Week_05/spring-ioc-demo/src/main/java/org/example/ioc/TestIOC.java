@@ -1,7 +1,12 @@
 package org.example.ioc;
 
 public class TestIOC {
+
     public static void main(String[] args) {
-        System.out.println(BeanFactory.getBean("test"));
+        IOCBean iocBean = (IOCBean) BeanFactory.getBean("test");
+        iocBean.say();
+
+        IOCBeanWithField iocBeanWithField = (IOCBeanWithField)BeanFactory.getBean("testautowired");
+        iocBeanWithField.say();
     }
 }

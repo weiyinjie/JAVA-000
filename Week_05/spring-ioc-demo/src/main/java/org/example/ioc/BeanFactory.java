@@ -1,6 +1,8 @@
 package org.example.ioc;
 
+import java.beans.Beans;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,27 @@ public class BeanFactory {
         CLAZZ_NAMES.forEach(System.out::println);
         // 加载所有bean
         loadClasses();
+
+        loadAutowired();
+    }
+
+    private static void loadAutowired() {
+        if (!BEANS.isEmpty()) {
+            BEANS.forEach((k, v) -> {
+                for (Field declaredField : v.getClass().getDeclaredFields()) {
+                    if (declaredField.isAnnotationPresent(AutoWired.class)) {
+                        declaredField.setAccessible(true);
+                        AutoWired annotation = declaredField.getAnnotation(AutoWired.class);
+                        String beanName = annotation.name().equals("") ? declaredField.getClass().getSimpleName().toLowerCase() : annotation.name();
+                        try {
+                            declaredField.set(v, BEANS.get(beanName));
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private static void loadClasses() {
