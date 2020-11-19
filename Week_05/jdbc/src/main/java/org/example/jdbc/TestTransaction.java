@@ -14,7 +14,7 @@ public class TestTransaction {
     private static final long id = 1L;
 
     public void doTransaction() {
-        Connection connection = ConnectionUtil.connection.get();
+        Connection connection = HikariCPConnectionUtil.getConnection();
         try {
             connection.setAutoCommit(false);
             System.out.println("user: " + this.getById(id));
@@ -38,7 +38,7 @@ public class TestTransaction {
 
     public void delete(Long id) {
         try {
-            Connection connection = ConnectionUtil.connection.get();
+            Connection connection = HikariCPConnectionUtil.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from user where id = ?");
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
@@ -49,7 +49,7 @@ public class TestTransaction {
 
     public void update(User user) {
         try {
-            Connection connection = ConnectionUtil.connection.get();
+            Connection connection = HikariCPConnectionUtil.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("update user set name = ? where id = ?");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setLong(2, user.getId());
