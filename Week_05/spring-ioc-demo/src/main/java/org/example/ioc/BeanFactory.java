@@ -8,17 +8,25 @@ import java.util.List;
 import java.util.Map;
 
 public class BeanFactory {
+
+    /**
+     * bean容器
+     */
     private static final Map<String, Object> BEANS = new HashMap<>();
 
+    /**
+     * 所有类名
+     */
     private static final List<String> CLAZZ_NAMES = new ArrayList<>();
 
     static {
         URL url = BeanFactory.class.getClassLoader().getResource("");
         String path = url.getPath();
-//        System.out.println(path);
         String packName = "";
+        // 加载所有类名
         loadClassNames(packName, new File(path));
         CLAZZ_NAMES.forEach(System.out::println);
+        // 加载所有bean
         loadClasses();
     }
 
