@@ -1,11 +1,16 @@
 package org.example.ioc;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.example.aop.AOPUtils;
 import org.example.aop.annotation.PointCut;
 import org.example.ioc.annotation.AutoWired;
 import org.example.ioc.annotation.Bean;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
@@ -102,7 +107,32 @@ public class BeanFactory {
                 }
             }
         }
-//        System.out.println(BEANS);
+        loadClassesByXML();
+    }
+
+    /**
+     * 解析xml加载类
+     */
+    private static void loadClassesByXML() {
+        InputStream resourceAsStream = BeanFactory.class.getClassLoader().getResourceAsStream("beans.xml");
+        SAXReader saxReader = new SAXReader();
+        try {
+            Document read = saxReader.read(resourceAsStream);
+            Element rootElement = read.getRootElement();
+            List<Element> list = rootElement.selectNodes("//bean");
+            for (int i = 0; i < list.size(); i++) {
+                Element element = list.get(i);
+                String name = element.attributeValue("name");
+                String className = element.attributeValue("class");
+                BEANS.put(name.toLowerCase(), Class.forName(className).newInstance());
+            }
+        } catch (DocumentException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void loadClassNames(String packName, File file) {
@@ -111,9 +141,12 @@ public class BeanFactory {
                 loadClassNames(packName + (packName.equals("") ? "" : ".") + listFile.getName(), listFile);
             }
         } else {
-            CLAZZ_NAMES.add(packName.replace(".class", ""));
+            if (packName.endsWith(".class")) {
+                CLAZZ_NAMES.add(packName.replace(".class", ""));
+            }
         }
     }
+
 
     public static Object getBean(String name) {
         return BEANS.get(name.toLowerCase());
